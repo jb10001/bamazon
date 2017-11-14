@@ -15,13 +15,28 @@ var connection = mysql.createConnection({
   database: "bamazon"
 });
 
+
 connection.connect(function(err) {
   if (err) throw err;
   console.log("connected as id " + connection.threadId + "\n");
   //createProduct();   tf is this
   selectAll();
  // afterConnection(); // throws MANY errors.. 3:11am.
+// console.log("right before inquirer");
+// inquirer.prompt([
+//   {
+//     name: "productID",
+//     message: "What is the ID of the product you'd like to buy?"
+    
+//   },
+//   {
+//     name: "quantity",
+//     message: "How many units of the product would you like to buy?"
+//   }
+// ]).then(function(answers) {
+//   console.log("answers to our question", answers);
 
+// });
 /* let's try something new.... 
   connection.end();       */
 });   // ***** END select ALL **** //
@@ -29,20 +44,16 @@ connection.connect(function(err) {
 function selectAll() {
   connection.query("SELECT * FROM products", function(err, res) {
     if (err) throw err;
-    console.log(res);
-    console.log("******");            // space in between (literal)
+    // console.log(res);
+    console.log("******");            
     for (var i=0; i<res.length; i++) {
       console.log(res[i].item_id + " " + "product: " + res[i].product_name + " " + "in department: " + res[i].department_name + " " + "$" + res[i].price + " " + "stock remaining: " + res[i].stock_quantity);
-    }
-  });                        // works
+    } 
+    askQuestions();
+  });                      
 }
-/* Ok, let's try */
-/* 8:30pm */
 
 
-// ***** NEW UPDATE: HOW TO USE, AFTER CONNECTION?? ****** 3:26AM //
-// *** NEW UPDATE: DOESN'T WORK. DOES NOT BE INCLUDED IN ORIGINAL CODE *** 3:14am //
-// *** COPIED FROM 'OTHER' ARRAY/EXERCISE..... **** //
 function afterConnection(){
 
 // why not MySQL?      Hmmmm.....
@@ -58,11 +69,49 @@ connection.query(sql, function (error, results, fields) {
    });
 };
 
+// if else
+// console.log ing
+
+
+
 // OK...3:00AM NOW TO FIGURE OUT, HOW TO CLEAN UP! THAT DATA JSON COMING BACK... //
 // ************ //
 // **** , CLEANED UP 3:26AM ****** //
 
-// **** NOW, for PROMPT **** 3:27AM. OK, GO *** //
+function askQuestions() {
+  console.log("right before inquirer");
+  inquirer.prompt([
+    {
+      name: "productID",
+      message: "What is the ID of the product you'd like to buy?",
+      type: "input"
+    },
+    {
+      name: "quantity",
+      message: "How many units of the product would you like to buy?",
+      type: "input"
+    }
+  ]).then(function(answers) {
+    console.log("answers to our question", answers);
 
+  });
+}
 
+// askQuestions();
+
+// console.log("right before inquirer");
+// inquirer.prompt([
+//   {
+//     name: "productID",
+//     message: "What is the ID of the product you'd like to buy?"
+    
+//   },
+//   {
+//     name: "quantity",
+//     message: "How many units of the product would you like to buy?"
+//   }
+// ]).then(function(answers) {
+//   console.log("answers to our question", answers);
+
+// });
 
